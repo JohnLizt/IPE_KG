@@ -61,7 +61,7 @@
                 节点信息 :
             </header>
             <div class = "panel-body ">
-                <table id = "nodeTable" class = "nodeTable" data-paging =  "true" data-sorting="true"></table>
+                <table id = "nodeTable" class = "table" data-paging =  "true" data-sorting="true"></table>
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@
         关系列表 :
     </header>
         <div class = "panel-body">
-            <table class = "relTable" data-paging =  "true" data-sorting="true"></table>
+            <table id = "relTable" class = "table" data-paging =  "true" data-sorting="true"></table>
         </div>
     </div>
 </div>
@@ -164,60 +164,77 @@
             }
 
             //基于表格的展示++
-            //节点信息
-            nodeData = [];
-            entity1 = {};
-            entity1["name"] = str;
-            entity1["released"] = entityRelation[0][0]['entity1']['released'];
-            entity1["link"] = entityRelation[0][0]['entity1']['link'];
-            nodeData.push(entity1);
-            jQuery(function(){
-                $('.nodeTable').footable({
-                "columns": [{"name":"name",title:"名称"} ,
-                          {"name":"released",title:"时间"},
-                          {"name":"link",title:"原文链接"}],
-                "rows": nodeData
-                });
-            });
+            //节点信息表
+            entity1 = [];
+            entity1.push(str);
+            entity1.push(entityRelation[0][0]['entity1']['released']);
+            entity1.push(entityRelation[0][0]['entity1']['link']);
 
             table = document.getElementById("nodeTable");
-            console.log(table.childElementCount)
+            headerRow = document.createElement('tr'); // 创建表头行元素
+            //headerRow.setAttribute('align','center');
+            headers = ['名称', '时间', '原文链接']; // 表头元素数组
+            headers.forEach(header => {
+              // 遍历表头元素数组
+              th = document.createElement('th'); // 创建表头单元格元素
+              th.textContent = header; // 为表头单元格元素设置文本内容
+              headerRow.appendChild(th); // 将表头单元格元素添加到表头行元素中
+            });
+            table.appendChild(headerRow); // 将表头行元素添加到表格中
 
-            /*
-            const table = document.getElementsByClassName('nodeTable'); // 获取表格元素
-            nodeData.forEach(node => {
-                // 使用JavaScript遍历数据集中的每一行
+            tr = document.createElement('tr'); // 创建行元素
+            //tr.setAttribute('align','center');
+            entity1.forEach(cellData => {
+                // 遍历每行中的每个单元格数据
+                const td = document.createElement('td'); // 创建单元格元素
+                td.textContent = cellData; // 为单元格元素设置文本内容
+                tr.appendChild(td); // 将单元格元素添加到行元素中
+            });
+            lastTd = tr.querySelector('td:last-child');
+            lastTd.addEventListener('click', () => {
+                window.location.href = lastTd.textContent; // 跳转到最后一列元素的文本内容作为的URL
+            });
+            lastTd.style.color = '#ADD8E6';
+            table.appendChild(tr);
+
+            //关系列表
+
+            tableData = []
+            for (var i = 0 ; i < entityRelation[0].length ; i++){
+                relationData = [] ;
+                relationData.push(str) ;
+                relationData.push(entityRelation[0][i]['rel']);
+                relationData.push(entityRelation[0][i]['entity2']['name']);
+                tableData.push(relationData) ;
+            }
+            table = document.getElementById("relTable");
+            headerRow = document.createElement('tr'); // 创建表头行元素
+            headers = ['Entity1', 'Relation', 'Entity2']; // 表头元素数组
+            headers.forEach(header => {
+              // 遍历表头元素数组
+              const th = document.createElement('th'); // 创建表头单元格元素
+              th.textContent = header; // 为表头单元格元素设置文本内容
+              headerRow.appendChild(th); // 将表头单元格元素添加到表头行元素中
+            });
+            table.appendChild(headerRow); // 将表头行元素添加到表格中
+
+            tableData.forEach(relation => {
                 const tr = document.createElement('tr'); // 创建行元素
-                node.forEach(cellData => {
+                relation.forEach(cellData => {
                     // 遍历每行中的每个单元格数据
                     const td = document.createElement('td'); // 创建单元格元素
                     td.textContent = cellData; // 为单元格元素设置文本内容
                     tr.appendChild(td); // 将单元格元素添加到行元素中
                 });
-                table.appendChild(tr);
-            });
-            */
-
-
-            //关系列表
-            tableData = []
-            for (var i = 0 ; i < entityRelation[0].length ; i++){
-                relationData = {} ;
-                relationData['entity1'] = str ;
-                relationData['relation'] = entityRelation[0][i]['rel'];
-                relationData['entity2'] = entityRelation[0][i]['entity2']['name'] ;
-                tableData.push(relationData) ;
-            }
-            jQuery(function(){
-                $('.relTable').footable({
-                "columns": [{"name":"entity1",title:"Entity1"} ,
-                          {"name":"relation",title:"Relation"},
-                          {"name":"entity2",title:"Entity2"}],
-                "rows": tableData
+                const lastTd = tr.querySelector('td:last-child');
+                lastTd.addEventListener('click', () => {
+                    window.location.href = "search_entity?user_text=" + lastTd.textContent; // 跳转到最后一列元素的文本内容作为的URL
                 });
-            });
-            //基于表格的展示--
+                lastTd.style.color = '#ADD8E6';
+                table.appendChild(tr);
+            })
 
+            //基于表格的展示--
         }
         // 基于准备好的数据：Data和Links，设置Echarts参数
         var myChart = echarts.init(document.getElementById('graph'));
