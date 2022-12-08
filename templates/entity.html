@@ -58,7 +58,7 @@
     <div class = "col-md-12">
         <div class="panel panel-default ">
             <header class="panel-heading">
-                节点信息 :
+                实体信息 :
             </header>
             <div class = "panel-body ">
                 <table id = "nodeTable" class = "table" data-paging =  "true" data-sorting="true"></table>
@@ -194,7 +194,7 @@
             lastTd.addEventListener('click', () => {
                 window.location.href = lastTd.textContent; // 跳转到最后一列元素的文本内容作为的URL
             });
-            lastTd.style.color = '#ADD8E6';
+            lastTd.style.color = '#0577f7';
             table.appendChild(tr);
 
             //关系列表
@@ -209,7 +209,7 @@
             }
             table = document.getElementById("relTable");
             headerRow = document.createElement('tr'); // 创建表头行元素
-            headers = ['Entity1', 'Relation', 'Entity2']; // 表头元素数组
+            headers = ['实体一', '关系', '实体二']; // 表头元素数组
             headers.forEach(header => {
               // 遍历表头元素数组
               const th = document.createElement('th'); // 创建表头单元格元素
@@ -230,10 +230,9 @@
                 lastTd.addEventListener('click', () => {
                     window.location.href = "search_entity?user_text=" + lastTd.textContent; // 跳转到最后一列元素的文本内容作为的URL
                 });
-                lastTd.style.color = '#ADD8E6';
+                lastTd.style.color = '#0577f7';
                 table.appendChild(tr);
             })
-
             //基于表格的展示--
         }
         // 基于准备好的数据：Data和Links，设置Echarts参数

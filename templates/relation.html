@@ -1,4 +1,5 @@
-{% extends "navigate.html" %} {% block mainbody %}
+{% extends "navigate.html" %}
+{% block mainbody %}
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
@@ -12,299 +13,156 @@
     <div class="row">
     <!--head start-->
     <div class="col-md-12">
-        <h3 class="page-header"><i class="fa fa-link" aria-hidden="true"></i> 关系查询 </h3>
+        <h3 class="page-header"><i class="fa fa-link" aria-hidden="true"></i> 实体关系管理 </h3>
             <ol class="breadcrumb">
                 <li><i class="fa fa-home"></i><a href="\">主页</a></li>
-                <li><i class="fa fa-link" aria-hidden="true"></i>关系查询</li>
+                <li><i class="fa fa-link" aria-hidden="true"></i>实体关系管理</li>
             </ol>
     </div>
-    
+
     <div class = "col-md-12">
     	<div class = "panel panel-default">
 			<header class="panel-heading">
-            查询条件：
+            实体管理：
        		</header>
        		<div class = "panel-body">
-
-			    <form  id ="searchRelationForm" class="form-inline" style="padding-left: 10% ; padding-right: 10%" method="get">
-			    	<div id = "entity1" class="form-group" style="padding: 2%">
-			        	<input type="text" id = "entity1_text" name = "entity1_text" class ="form-control" placeholder="实体１" aria-describedby="basic-addon1">
+			    <form  id ="createEntityForm" class="form-inline" style="padding-left: 10% ; padding-right: 10%" method="get" >
+			    	<div id = "entityName" class="form-group" style="padding: 2%">
+			        	<input type="text" id = "entityName" name = "entityName" class ="form-control" placeholder="名称" aria-describedby="basic-addon1">
 			 		</div>
 			 		<!--dropdown combobox start-->
-			        <div class="btn-group" style="padding: 2%" > <a class="btn btn-default dropdown-toggle btn-select form-control" data-toggle="dropdown" id="btnCountry">关系类型<span class="caret"></span></a>
+			        <div class="btn-group" style="padding: 2%" > <a class="btn btn-default dropdown-toggle btn-select form-control" data-toggle="dropdown" id="btnCountry">实体类型<span class="caret"></span></a>
 			            <ul class="dropdown-menu">
-			                <li><a href="#">Type</a></li>
+			                <li><a href="#">IPE_l0</a></li>
+                            <li><a href="#">IPE_l1</a></li>
+                            <li><a href="#">IPE_l2</a></li>
 			                <li class="divider"></li>
-			                <li><a href="#"><span class="glyphicon glyphicon-star"></span>其他</a></li>
+			                <li><a href="#">Knowledge</a></li>
+                            <li><a href="#">Knowledge_unit</a></li>
+                            <li><a href="#">Knowledge_area</a></li>
 			            </ul>
 			        </div>
 			        <!--dropdown combobox end-->
 			        <div id = "relation_name" class = "form-group hide" style="padding: 2%">
-			        	 <input type="text" id = "relation_name_input" name = "relation_name_text" class ="form-control" placeholder="输入关系名称" aria-describedby="basic-addon1">
+			        	 <input type="text" id = "entity_tag_input" name = "entityTag" class ="form-control" placeholder="输入实体标签" aria-describedby="basic-addon1">
 			        </div>
-			        <div id = "entity2" class = "form-group" style="padding: 2%">
-			        	 <input type="text" id = "entity2_text" name = "entity2_text" class ="form-control" placeholder="实体２" aria-describedby="basic-addon1">
+			        <div id = "entityRelease" class = "form-group" style="padding: 2%">
+			        	 <input type="text" id = "entityRelease" name = "entityRelease" class ="form-control" placeholder="时间" aria-describedby="basic-addon1">
+			        </div>
+                    <div id = "entityLink" class = "form-group" style="padding: 2%">
+			        	 <input type="text" id = "entityLink" name = "entityLink" class ="form-control" placeholder="原文链接" aria-describedby="basic-addon1">
+			        </div>
+                    <div id = "operation" class = "form-group hide" style="padding: 2%">
+			        	 <input type="text" id = "entityOperation" name = "entityOperation" class ="form-control" aria-describedby="basic-addon1">
 			        </div>
 			        <div class="btn-group" style="padding: 2%">
-			            <button type="button" id="btnSearch" class="btn btn-primary" onclick = "document.getElementById('searchRelationForm').submit();">Search</button>
+			            <button type="button" id="btnCreate" class="btn btn-primary" onclick = "createEntity()">Create</button>
+			        </div>
+                    <div class="btn-group" style="padding: 2%">
+			            <button type="button" id="btnCreate" class="btn btn-danger" onclick = "deleteEntity()">Delete</button>
 			        </div>
 				</form>
 			</div>
 		</div>
 	</div>
-	{% if ctx %}
-	<div class = "col-md-12">
-		<div class = "panel panel-default">
-			<header class = "panel-heading">
-				查询结果：
-			</header>
-			<div class = "panel-body">
-				<div style="padding: 2%">
-					<h2>暂未找到相应的匹配</h2>
-				</div>
+    <div class = "col-md-12">
+    	<div class = "panel panel-default">
+			<header class="panel-heading">
+            关系管理：
+       		</header>
+       		<div class = "panel-body">
+			    <form  id ="RelationForm" class="form-inline" style="padding-left: 10% ; padding-right: 10%" method="get">
+			    	<div id = "entity1" class="form-group" style="padding: 2%">
+			        	<input type="text" id = "entity1_text" name = "entity1_text" class ="form-control" placeholder="实体１" aria-describedby="basic-addon1">
+			 		</div>
+                    <div class="btn-group" style="padding: 2%" > <a class="btn btn-default dropdown-toggle btn-select form-control" data-toggle="dropdown" id="btnCountry">关系类型<span class="caret"></span></a>
+			            <ul class="dropdown-menu">
+			                <li><a href="#">包含</a></li>
+                            <li><a href="#">属于</a></li>
+			                <li class="divider"></li>
+                            <li><a href="#">关联</a></li>
+			            </ul>
+			        </div>
+			        <!--dropdown combobox end-->
+			        <div id = "relation_name" class = "form-group hide" style="padding: 2%">
+			        	 <input type="text" id = "relation_name_input" name = "relType" class ="form-control" placeholder="输入关系类型" aria-describedby="basic-addon1">
+			        </div>
+			        <div id = "entity2" class = "form-group" style="padding: 2%">
+			        	 <input type="text" id = "entity2_text" name = "entity2_text" class ="form-control" placeholder="实体２" aria-describedby="basic-addon1">
+			        </div>
+                    <div id = "operation" class = "form-group hide" style="padding: 2%">
+			        	 <input type="text" id = "relOperation" name = "relOperation" class ="form-control" aria-describedby="basic-addon1">
+			        </div>
+			        <div class="btn-group" style="padding: 2%">
+			            <button type="button" id="btnSearch" class="btn btn-primary" onclick = "createRel()">Create</button>
+			        </div>
+                    <div class="btn-group" style="padding: 2%">
+			            <button type="button" id="btnSearch" class="btn btn-danger" onclick = "deleteRel()">Delete</button>
+			        </div>
+				</form>
 			</div>
 		</div>
 	</div>
-	{% endif %}
 
-    {% if searchResult %}
-
-    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div class = "col-md-12">
-        <div class="panel panel-default ">
-	        <header class="panel-heading">
-	            关系图 :
-	        </header>
-            <div class = "panel-body ">
-                <div id="graph" style="width: 100%;height:600px;"></div>
+    {% if ctx %}
+        <div class = "col-md-12">
+            <div class = "panel panel-default">
+                <header class = "panel-heading">
+                    操作结果：
+                </header>
+                <div class = "panel-body">
+                    <div style="padding: 2%">
+                        <h2 id="ctx"></h2>
+                        <script>
+                          const jsVariableElement = document.getElementById("ctx");
+                          var ctx_text = {{ ctx|safe }};
+                          jsVariableElement.innerHTML = ctx_text["title"];
+                        </script>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <!-- Footable -->
-    <div class = "col-md-12">
-	    <div class="panel panel-default">
-	    	<header class="panel-heading">
-	       	 关系列表 :
-	   		</header>
-	        <div class = "panel-body">
-	            <table class = "table" data-paging =  "true" data-sorting="true"></table>
-	        </div>
-	    </div>
-	</div>
     {% endif %}
-
 </div>
 <script src="/static/js/jquery-1.8.3.min.js"></script>
-{% if searchResult %}
-<script type="text/javascript">
-	var searchResult = {{searchResult|safe}}
-	//用表格列出所有的关系
-    tableData = []
-    for (var i = 0 ; i < searchResult.length ; i++){
-        relationData = {} ;
-        relationData['entity1'] = searchResult[i]['n1']['name'];
-        relationData['relation'] = searchResult[i]['rel']['type'] ;
-        relationData['entity2'] = searchResult[i]['n2']['name'] ;
-        tableData.push(relationData) ;
-    }
-    jQuery(function(){
-        $('.table').footable({
-        "columns": [{"name":"entity1",title:"Entity1"} ,
-                  {"name":"relation",title:"Relation"},
-                  {"name":"entity2",title:"Entity2"}],
-        "rows": tableData
-        });
-    });
-
-    //echarts 数据
-    var data = [] ;
-    var links = [] ;	
-
-    //构造展示的数据
-    var maxDisPlayNode = 15 ;
-    var id = 0 ; 
-    for( var i = 0 ;id < Math.min(maxDisPlayNode,searchResult.length) && i<searchResult.length ; i++ ){
-        //获取node1
-        node1 = {} ;
-        node1['name'] = searchResult[i]['n1']['name'] ;
-        node1['draggable'] = true ;
-        if('url' in searchResult[i]['n1']){
-            node1['category'] = 1 ;
-        }
-        else{
-            node1['category'] = 2 ;
-        }
-        var flag = 1 ;
-
-        relationTarget = id.toString() ;
-        for(var j = 0 ; j<data.length ;j++){
-        	if(data[j]['name'] === node1['name']){
-        		flag = 0 ;
-        		relationTarget = data[j]['id'] ;
-        		break ;
-        	}
-        }
-
-        node1['id'] = relationTarget ; 
-        if(flag === 1){
-        	id++ ;
-        	data.push(node1) ;
-        }
-
-        //获取node2
-        node2 = {} ;
-        node2['name'] = searchResult[i]['n2']['name'] ;
-        node2['draggable'] = true ;
-        if('url' in searchResult[i]['n2']){
-            node2['category'] = 1 ;
-        }
-        else{
-            node2['category'] = 2 ;
-        }
-        flag = 1 ;
-        relationTarget = id.toString() ;
-        for(var j = 0 ; j<data.length ;j++){
-        	if(data[j]['name'] === node2['name']){
-        		flag = 0 ;
-        		relationTarget = data[j]['id'] ;
-        		break ;
-        	}
-        }
-        node2['id'] = relationTarget ; 
-        if(flag === 1){
-        	id++ ;
-        	data.push(node2) ;
-        }
-
-        //获取relation
-        relation = {}
-        relation['source'] = node1['id'];
-        relation['target'] = node2['id'] ;
-        relation['category'] = 0 ;  
-        flag = 1;  
-        for(var j = 0 ;j<links.length;j++){
-        	if(links[j]['source'] == relation['source'] && links[j]['target'] == relation['target']){
-        		links[j]['value'] = links[j]['value'] + searchResult[i]['rel']['type'] ;
-        		flag = 0 ;
-        		break ;
-        	}
-        }           
-        if(flag === 1){
-        	relation['value'] = searchResult[i]['rel']['type'] ;
-        	relation['symbolSize'] = 10;
-        	links.push(relation) ;
-        }
-
-    }
-
-
-     // Echarts初始化设置
-    var myChart = echarts.init(document.getElementById('graph'));
-    
-    option = {
-	    title: {
-	        text: ''
-	    },
-	    tooltip: {},
-	    animationDurationUpdate: 1500,
-	    animationEasingUpdate: 'quinticInOut',
-	    label: {
-	        normal: {
-	            show: true,
-	            textStyle: {
-	                fontSize: 12
-	            },
-	        }
-	    },
-	    legend: {
-	        x: "center",
-	        show: false
-	    },
-	    series: [
-
-	        {
-	            type: 'graph',
-	            layout: 'force',
-	            symbolSize: 45,
-	            focusNodeAdjacency: true,
-	            roam: true,
-	            edgeSymbol: ['none', 'arrow'],
-	            categories: [{
-	                name: '查询实体',
-	                itemStyle: {
-	                    normal: {
-	                        color: "#009800",
-	                    }
-	                }
-	            }, {
-	                name: 'Bank',
-	                itemStyle: {
-	                    normal: {
-	                        color: "#4592FF",
-	                    }
-	                }
-	            }, {
-	                name: 'Serise',
-	                itemStyle: {
-	                    normal: {
-	                        color: "#C71585",
-	                    }
-	                }
-	            }],
-	            label: {
-	                normal: {
-	                    show: true,
-	                    textStyle: {
-	                        fontSize: 12,
-	                    },
-	                }
-	            },
-	            force: {
-	                repulsion: 1000
-	            },
-	            edgeSymbolSize: [4, 50],
-	            edgeLabel: {
-	                normal: {
-	                    show: true,
-	                    textStyle: {
-	                        fontSize: 10
-	                    },
-	                    formatter: "{c}"
-	                }
-	            },
-	            data: data,
-	            links: links,
-	            lineStyle: {
-	                normal: {
-	                    opacity: 0.9,
-	                    width: 1.3,
-	                    curveness: 0,
-	                    color:"#262626",
-	                }
-	            }
-	        }
-	    ]
-	};
-	// 使用刚指定的配置项和数据显示图表。
-	myChart.setOption(option);
-
+<script>
+  // 定义创建函数
+  function createEntity() {
+      var form = document.getElementById("createEntityForm");
+      var op = document.getElementById("entityOperation");
+      op.value = "createEntity";
+      form.submit();
+  }
+  // 定义删除函数
+  function deleteEntity() {
+      var form = document.getElementById("createEntityForm");
+      var op = document.getElementById("entityOperation");
+      op.value = "deleteEntity";
+      form.submit();
+  }
+  function createRel() {
+      var form = document.getElementById("RelationForm");
+      var op = document.getElementById("relOperation");
+      op.value = "createRel";
+      form.submit();
+  }
+  function deleteRel() {
+      var form = document.getElementById("RelationForm");
+      var op = document.getElementById("relOperation");
+      op.value = "deleteRel";
+      form.submit();
+  }
 </script>
-{% endif %}
 <script>
 	$(".dropdown-menu li a").click(function(){
 	   var selText = $(this).text();
 	   $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
-	   if(selText.trim()!="Other"){
-	   	$("#relation_name_input").val(selText.trim()) ;
-	   }
-	   //combobox behavior
-	   if (selText.trim()==="Other") {
-	       $("#relation_name").removeClass("hide");
-	   }
-	   else{
-	   	   $("#relation_name").addClass("hide");
-	   }
-	  
+	   var formId = $(this).closest("form").attr("id");
+       if (formId === "RelationForm") {
+           $("#relation_name_input").val(selText.trim()) ;
+       } else {
+           $("#entity_tag_input").val(selText.trim()) ;
+       }
 	});
 </script>
 {% endblock %}
